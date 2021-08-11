@@ -11,11 +11,24 @@
                     </div>
                 </a>
 
-                <div class="card-body">
-                    <h4 class="card-title">{{ produto.nome | titlecase }}</h4>
-                    <p>Por apenas :</p>
-                    <div><h4>R$ {{ produto.valor | currency:'BRL':'symbol':'1.2-2':'pt' }}</h4></div>
+                <div [ngSwitch]="produto.promocao">
+                    <p *ngSwitchCase="true">Promoção!</p>
+                    <p *ngSwitchCase="false">Por apenas:</p>
                 </div>
+                
+                <div *ngIf="produto.promocao" class="card-body">
+                    <div><h4 class="card-title">{{ produto.nome | titlecase }}</h4>
+                        De:<small><del>R$ {{ produto.valor | currency:'BRL':'symbol':'1.2-2':'pt' }}</del></small>
+                        <h4>Por: R$ {{ produto.valorPromo | currency:'BRL':'symbol':'1.2-2':'pt' }}</h4>
+                    </div>
+                </div>
+                
+                <div *ngIf="!produto.promocao" class="card-body">
+                    <div><h4 class="card-title">{{ produto.nome | titlecase }}</h4>
+                        R$ {{ produto.valor | currency:'BRL':'symbol':'1.2-2':'pt' }}
+                    </div>
+                </div>
+
                 <div class="card-footer">
                     <a class="btn btn-primary">
                     <span class="fa fa-shopping-cart"></span> Comprar
